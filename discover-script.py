@@ -1,6 +1,6 @@
 import json
 import requests
-from auth import spotify_user_id, discover_weekly_id
+from auth import spotify_user_id, discover_weekly_id, discover_playlist_id, liked_discovers_playlist_id
 from datetime import date
 from refresh import Refresh
 
@@ -11,8 +11,8 @@ class SaveDiscovers:
         self.discover_weekly_id = discover_weekly_id
         self.tracks = ""
         self.liked_tracks = ""
-        self.discover_playlist = "3GfAutnyoQS8TQVgvVnZN9"
-        self.liked_discovered_playlist = "0tAIJjIF7scIAVAMGFY0tC"
+        self.discover_playlist = discover_playlist_id
+        self.liked_discovered_playlist = liked_discovers_playlist_id
     
     def find_songs(self):
 
