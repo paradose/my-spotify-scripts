@@ -10,7 +10,9 @@ class SaveDiscovers:
         self.spotify_token = ""
         self.discover_weekly_id = discover_weekly_id
         self.tracks = ""
+        self.liked_tracks = ""
         self.discover_playlist = "3GfAutnyoQS8TQVgvVnZN9"
+        self.liked_discovered_playlist = "0tAIJjIF7scIAVAMGFY0tC"
     
     def find_songs(self):
 
@@ -25,13 +27,30 @@ class SaveDiscovers:
         
         response_json = response.json()
 
-        print(response)
 
         for i in response_json["items"]:
-            self.tracks += (i["track"]["uri"] + ",")
+
+            track_uri = i["track"]["uri"]
+            track_id = i["track"]["id"]
+     
+            if self.get_liked_tracks(track_id):
+                self.liked_tracks += (track_uri + ",")
+            self.tracks += (track_uri + ",")
         self.tracks = self.tracks[:-1]
 
         self.add_to_playlist()
+
+    def get_liked_tracks(self, trackid):
+
+        query = "https://api.spotify.com/v1/me/tracks/contains?ids={}".format(trackid)
+        response = requests.get(query,
+                            headers={"Content-Type": "application/json",
+                            "Authorization": "Bearer {}".format(self.spotify_token)})
+        
+        response_json = response.json()
+        # returns true if liked
+        return response_json[0]
+
 
     def create_playlist(self):
         
@@ -57,6 +76,10 @@ class SaveDiscovers:
     def add_to_playlist(self):
        print("adding to playlist ...")
        query = "https://api.spotify.com/v1/playlists/{}/tracks?uris={}".format(self.discover_playlist, self.tracks)
+       response = requests.post(query,headers={"Content-Type": "application/json","Authorization": "Bearer {}".format(self.spotify_token)})
+       print(response.json)
+
+       query = "https://api.spotify.com/v1/playlists/{}/tracks?uris={}".format(self.liked_discovered_playlist, self.liked_tracks)
        response = requests.post(query,headers={"Content-Type": "application/json","Authorization": "Bearer {}".format(self.spotify_token)})
        print(response.json)
     
