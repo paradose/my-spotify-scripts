@@ -25,7 +25,6 @@ class DiscoverWeeklySaver:
         tracks = ''
 
         for i in response_json["items"]:
-
             track_uri = i["track"]["uri"]
             tracks += (track_uri + ",")
 
