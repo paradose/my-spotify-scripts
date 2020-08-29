@@ -88,8 +88,3 @@ class DiscoverWeeklySaver:
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(self.spotify_token)
             }
-
-if __name__ == '__main__':
-    a = DiscoverWeeklySaver(spotify_user_id, discover_playlist_id, discover_weekly_id)
-    a.call_refresh()
-    a.find_discovered_songs()
